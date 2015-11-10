@@ -11,16 +11,6 @@ var Episode = function(data, series_data){
   }
 }
 
-Episode.live = function(callback) {
-  UitzendingGemist.Episode.popular(function(episodes){
-    callback(
-      episodes.map(function(episode){
-        return new Episode(episode, episode.series)
-      })
-    )
-  })
-}
-
 Episode.popular = function(callback) {
   UitzendingGemist.Episode.popular(function(episodes){
     callback(

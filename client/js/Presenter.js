@@ -82,18 +82,16 @@ var Presenter = {
 
     switch(view) {
 	  case "live":
-        Episode.live(function(episodes){
-          resourceLoader.loadResource(resourceLoader.BASEURL + "templates/Live.xml.js",
-            episodes,
-            function(resource) {
-              if (resource) {
-                var doc = self.makeDocument(resource);
-                doc.addEventListener("select", self.load.bind(self));
-                self.menuBarItemPresenter.call(self, doc, element);
-              }
+        resourceLoader.loadResource(resourceLoader.BASEURL + "templates/Live.xml.js",
+          episodes,
+          function(resource) {
+            if (resource) {
+              var doc = self.makeDocument(resource);
+              doc.addEventListener("select", self.load.bind(self));
+              self.menuBarItemPresenter.call(self, doc, element);
             }
-          )
-        })
+          }
+        )
       break
       case "popular":
         Episode.popular(function(episodes){
