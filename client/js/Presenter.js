@@ -77,8 +77,24 @@ var Presenter = {
 
     episodeID = element.getAttribute("episode")
     seriesID = element.getAttribute("series")
+    
+    possibleLiveURL = element.getAttribute("liveURL")
 
     switch(view) {
+	  case "live":
+        Episode.live(function(episodes){
+          resourceLoader.loadResource(resourceLoader.BASEURL + "templates/Live.xml.js",
+            episodes,
+            function(resource) {
+              if (resource) {
+                var doc = self.makeDocument(resource);
+                doc.addEventListener("select", self.load.bind(self));
+                self.menuBarItemPresenter.call(self, doc, element);
+              }
+            }
+          )
+        })
+      break
       case "popular":
         Episode.popular(function(episodes){
           resourceLoader.loadResource(resourceLoader.BASEURL + "templates/Popular.xml.js",
@@ -147,6 +163,16 @@ var Presenter = {
           player.present();
         })
       break
+      case "liveVideo":
+        var player = new Player();
+        var playlist = new Playlist();
+
+        var mediaItem = new MediaItem("video", possibleLiveURL);
+
+        player.playlist = playlist;
+        player.playlist.push(mediaItem);
+        player.present();
+        break
     }
   },
 
