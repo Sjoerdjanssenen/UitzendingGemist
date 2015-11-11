@@ -78,12 +78,12 @@ var Presenter = {
     episodeID = element.getAttribute("episode")
     seriesID = element.getAttribute("series")
     
-    possibleLiveURL = element.getAttribute("liveURL")
+    channel = element.getAttribute("channel")
 
     switch(view) {
-	  case "live":
+      case "live":
         resourceLoader.loadResource(resourceLoader.BASEURL + "templates/Live.xml.js",
-          episodes,
+          {},
           function(resource) {
             if (resource) {
               var doc = self.makeDocument(resource);
@@ -164,13 +164,15 @@ var Presenter = {
       case "liveVideo":
         var player = new Player();
         var playlist = new Playlist();
+        
+        var url = "http://l2cm305f07462a00563fbd54000000.d30a0b36ce8eb7a8.smoote2m.npostreaming.nl/d/live/npo/tvlive/ned" + channel + "/ned" + channel + ".isml/ned" + channel + ".m3u8";
 
-        var mediaItem = new MediaItem("video", possibleLiveURL);
+        var mediaItem = new MediaItem("video", url);
 
         player.playlist = playlist;
         player.playlist.push(mediaItem);
         player.present();
-        break
+      break
     }
   },
 
