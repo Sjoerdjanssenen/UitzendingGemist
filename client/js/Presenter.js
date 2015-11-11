@@ -79,6 +79,7 @@ var Presenter = {
     seriesID = element.getAttribute("series")
     
     channel = element.getAttribute("channel")
+    hash = element.getAttribute("hash")
 
     switch(view) {
       case "live":
@@ -165,13 +166,22 @@ var Presenter = {
         var player = new Player();
         var playlist = new Playlist();
         
-        var url = "http://l2cm305f07462a00563fbd54000000.d30a0b36ce8eb7a8.smoote2m.npostreaming.nl/d/live/npo/tvlive/ned" + channel + "/ned" + channel + ".isml/ned" + channel + ".m3u8";
+        var url = "http://livestreams.omroep.nl/live/npo/tvlive/ned"+channel+"/ned"+channel+".isml/ned"+channel+".m3u8?hash="+hash+"&type=json&protection=url";
+		
+		request = new XMLHttpRequest()
+	    request.open("GET", url)
+	    request.addEventListener("load", function(){
+	      var url = JSON.parse(request.responseText);
+		  url = url.replace('\\', "");
+		  url = url.replace('.m3u8', '-audio=128000-video=900000.m3u8');
+		  
+		  var mediaItem = new MediaItem("video", url);
 
-        var mediaItem = new MediaItem("video", url);
-
-        player.playlist = playlist;
-        player.playlist.push(mediaItem);
-        player.present();
+          player.playlist = playlist;
+          player.playlist.push(mediaItem);
+          player.present();
+	    })
+	    request.send()
       break
     }
   },
